@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>ECharts</title>
+    <title>2020-跑步</title>
     <!-- 引入 echarts.js -->
     <script src="../node_modules/echarts/dist/echarts.min.js"></script>
 </head>
@@ -21,12 +21,16 @@
             var end = +echarts.number.parseDate((+year + 1) + '-01-01');
             var dayTime = 3600 * 24 * 1000;
             var data = [
-                ["2020-05-06",4.11],
-                ["2020-05-07",4.05],
-                ["2020-05-08",4.30],
-                ["2020-05-11",4.20],
-                ["2020-05-12",4.02],
+                ["2020-04-14",3.93],["2020-04-16",4.03],["2020-04-20",3.96],["2020-04-21",3.99],["2020-04-26",3.98],["2020-04-28",4.24],["2020-04-29",4.02], //78-75公斤
+                ["2020-05-06",4.11],["2020-05-07",4.05],["2020-05-08",4.30],["2020-05-11",4.02],["2020-05-12",4.02],["2020-05-13",4.02],["2020-05-14",4.05], //78-75公斤
+                // 05-16爬梧桐山
+                ["2020-05-18",0.41],["2020-05-19",4.03],["2020-05-20",5.00]
             ];
+            var changedata = data.map(item => {
+                item[1] = item[1]*1000
+                console.log(item)
+                return item
+            })
             // var data = []
             // for (var time = date; time < end; time += dayTime) {
             //     data.push([
@@ -34,7 +38,7 @@
             //         20
             //     ]);
             // }
-            return data;
+            return changedata;
         }
         // 指定图表的配置项和数据
         var option = {
@@ -45,9 +49,11 @@
             },
             tooltip: {},
             visualMap: {
-                min: 3.9,
-                max: 4.3,
+                min: 3900,
+                max: 5000,
                 type: 'piecewise',
+                pieces:[{min:5000},{min:4500,max:5000},{min:4200,max:4500},{min:4100,max:4200},{min:4000,max:4100},{min:3900,max:4000},{max:3900}],
+                // dimension:2,//映射唯独
                 orient: 'horizontal',
                 left: 'center',
                 top: 65,
@@ -57,16 +63,20 @@
             },
             calendar: {
                 top: 120,
-                left: 30,
+                left: 50,
                 right: 30,
-                cellSize: ['auto', 40],
-                range: '2020',
+                cellSize: ['auto', 40],//日历每格框的大小
+                range: ['2020-04-14', '2020-12-31'],//某个时间段范围
                 itemStyle: {
                     borderWidth: 0.5
                 },
                 yearLabel: {
                     show: false
-                }
+                },
+                dayLabel: {
+                    firstDay: 1, // 从周一开始
+                    nameMap: 'cn'
+                },
             },
             series: {
                 type: 'heatmap',
