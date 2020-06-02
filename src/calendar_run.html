@@ -11,6 +11,8 @@
 <body>
     <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
     <div id="main" style="width: 100%;height: 400px;"></div>
+    <h3>5月21日开始至10月1日前跑步公里数和:<span id="total"></span>/300</h3>
+    
     <script type="text/javascript">
         // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('main'));
@@ -24,13 +26,16 @@
                 ["2020-04-14",3.93],["2020-04-16",4.03],["2020-04-20",3.96],["2020-04-21",3.99],["2020-04-26",3.98],["2020-04-28",4.24],["2020-04-29",4.02], //78-75公斤
                 ["2020-05-06",4.11],["2020-05-07",4.05],["2020-05-08",4.30],["2020-05-11",4.02],["2020-05-12",4.02],["2020-05-13",4.02],["2020-05-14",4.05], //78-75公斤
                 // 05-16爬梧桐山
-                ["2020-05-18",0.41],["2020-05-19",4.03],["2020-05-20",5.00]
+                ["2020-05-18",0.41],["2020-05-19",4.03],["2020-05-20",5.00],["2020-05-22",5.00],["2020-05-23",4.68], //74
+                // 05-24爬白云山
+                ["2020-05-25",4.21],["2020-05-27",4.93],["2020-05-28",4.96],["2020-05-29",4.84],["2020-06-01",4.96]
             ];
-            var changedata = data.map(item => {
-                item[1] = item[1]*1000
-                console.log(item)
-                return item
-            })
+            var total = 0
+            for(var i = 17;i<data.length;i++){
+                total = data[i][1] + total
+            }
+            document.getElementById("total").innerHTML = total;
+
             // var data = []
             // for (var time = date; time < end; time += dayTime) {
             //     data.push([
@@ -38,7 +43,7 @@
             //         20
             //     ]);
             // }
-            return changedata;
+            return data;
         }
         // 指定图表的配置项和数据
         var option = {
@@ -49,10 +54,10 @@
             },
             tooltip: {},
             visualMap: {
-                min: 3900,
-                max: 5000,
+                min: 3.65,
+                max: 5,
                 type: 'piecewise',
-                pieces:[{min:5000},{min:4500,max:5000},{min:4200,max:4500},{min:4100,max:4200},{min:4000,max:4100},{min:3900,max:4000},{max:3900}],
+                // pieces:[{min:5.2},{min:4.5,max:5.2},{min:4.2,max:4.5},{min:4.1,max:4.2},{min:4,max:4.1},{min:3.9,max:4},{max:3.9}],
                 // dimension:2,//映射唯独
                 orient: 'horizontal',
                 left: 'center',
@@ -66,7 +71,7 @@
                 left: 50,
                 right: 30,
                 cellSize: ['auto', 40],//日历每格框的大小
-                range: ['2020-04-14', '2020-12-31'],//某个时间段范围
+                range: ['2020-04-14', '2020-9-30'],//某个时间段范围
                 itemStyle: {
                     borderWidth: 0.5
                 },
