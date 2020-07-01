@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>2020-爬山</title>
+    <title>2020-</title>
     <!-- 引入 echarts.js -->
     <script src="../node_modules/echarts/dist/echarts.min.js"></script>
 </head>
@@ -11,8 +11,135 @@
 <body>
     <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
     <div id="main" style="width: 100%;height: 400px;"></div>
+    
     <script type="text/javascript">
-        
+    var myChart = echarts.init(document.getElementById('main'));
+      var graphData = [
+    [
+        // Consider timeoffset, add two days to avoid overflow.
+        1485878400000 + 3600 * 24 * 1000 * 2,
+        260
+    ],
+    [
+        1486137600000,
+        200
+    ],
+    [
+        1486569600000,
+        279
+    ],
+    [
+        1486915200000,
+        847
+    ],
+    [
+        1487347200000,
+        241
+    ],
+    [
+        1487779200000 + 3600 * 24 * 1000 * 15,
+        411
+    ],
+    [
+        1488124800000 + 3600 * 24 * 1000 * 23,
+        985
+    ]
+];
+
+var links = graphData.map(function (item, idx) {
+    console.log(idx)
+    return {
+        source: idx,
+        target: idx + 1
+    };
+});
+links.pop();
+
+function getVirtulData(year) {
+    year = year || '2017';
+    var date = +echarts.number.parseDate(year + '-01-01');
+    var end = +echarts.number.parseDate((+year + 1) + '-01-01');
+    var dayTime = 3600 * 24 * 1000;
+    var data = [];
+    for (var time = date; time < end; time += dayTime) {
+        data.push([
+            echarts.format.formatTime('yyyy-MM-dd', time),
+            Math.floor(Math.random() * 1000)
+        ]);
+    }
+    console.log(data)
+    return data;
+}
+
+
+option = {
+    tooltip: {},
+    calendar: {
+        top: 'middle',
+        left: 'center',
+        orient: 'horizontal',
+        cellSize: 40,
+        yearLabel: {
+            margin: 50,
+            textStyle: {
+                fontSize: 30
+            }
+        },
+        dayLabel: {
+            firstDay: 1,
+            nameMap: 'cn'
+        },
+        monthLabel: {
+            nameMap: 'cn',
+            margin: 15,
+            textStyle: {
+                fontSize: 20,
+                color: '#999'
+            }
+        },
+        range: ['2017-02', '2017-09-31']
+    },
+    visualMap: {
+        min: 0,
+        max: 1000,
+        type: 'piecewise',
+        left: 'center',
+        bottom: 0,
+        inRange: {
+            color: ['#5291FF', '#C7DBFF']
+        },
+        seriesIndex: [1],
+        orient: 'horizontal'
+    },
+    series: [{
+        type: 'graph',
+        edgeSymbol: ['none', 'arrow'],
+        coordinateSystem: 'calendar',
+        links: links,
+        symbolSize: 15,
+        calendarIndex: 0,
+        itemStyle: {
+            color: 'yellow',
+            shadowBlue: 9,
+            shadowOffsetX: 1.5,
+            shadowOffsetY: 3,
+            shadowColor: '#555'
+        },
+        lineStyle: {
+            color: '#D10E00',
+            width: 1,
+            opacity: 1
+        },
+        data: graphData,
+        z: 20
+    }, {
+        type: 'heatmap',
+        coordinateSystem: 'calendar',
+        data: getVirtulData(2017)
+    }]
+};
+ // 使用刚指定的配置项和数据显示图表。
+ myChart.setOption(option);
     </script>
 </body>
 
