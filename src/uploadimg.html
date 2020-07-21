@@ -15,7 +15,7 @@
             float:left;
             height:60px;
             width:60px;
-            background:url(../img/images/images/xiang1_06.png) no-repeat center;
+            /* background:url(../img/images/images/xiang1_06.png) no-repeat center; */
             background-size: .19rem;
             background-color: #ccc;
             margin-left: .17rem;
@@ -75,13 +75,15 @@
             <input type="file" class="file-btn" name="img[]"/>
         </label> 
             <div class="review-box"></div> 
-            <label><input type="file" class="file-btn clone-dom" name="img[]"/>
+            <label><input type="file" id="tttt" class="file-btn clone-dom" name="img[]"/>
        </label> 
     </div> 
 </body>
+<!-- 格式是blob:null/4304d4f3-c13b-43e8-83f6-8c80426520ff -->
 <script type="text/javascript">
     //获取文件url
   function createObjectURL(blob){
+    //   console.log(window.URL,window.webkitURL)
       if (window.URL){
           return window.URL.createObjectURL(blob);
       } else if (window.webkitURL){
@@ -96,7 +98,9 @@
   var domFragment =  document.createDocumentFragment();   //文档流优化多次改动dom
 
   $("#fileBox").on("click", ".file-btn",function(){
+      
       var index = $(this).parent().index();
+    //   console.log(index)
       if(index == 6){
           alert("最多可以上传4张图片！");
           return false;
@@ -104,25 +108,31 @@
   });
   //触发选中文件事件
   $("#fileBox").on("change", ".file-btn", function(event){
+    //     console.log(document.getElementById('tttt').files)
+    //   console.log(event.target.files)
       var imgNum = parseInt($("#fileBox .review-box img").length);
+    //   console.log("asdasdas",event.target.files)
+    //   console.log("aaaaaaaaa",imgNum)
       if(imgNum < 4){
           var file = event.target.files;  //获取选中的文件对象
           var imgTag = $("<img src=''/>");
           var fileName = file[0].name;    //获取当前文件的文件名
           var url = createObjectURL(file[0]); //获取当前文件对象的URL
+          console.log(url)
           //忽略大小写
           var jpg = (fileName.indexOf(".jpg") > -1) || (fileName.toLowerCase().indexOf(".jpg") > -1);
           var png = (fileName.indexOf(".png") > -1) || (fileName.toLowerCase().indexOf(".png") > -1);
           var jpeg = (fileName.indexOf(".jpeg") > -1) || (fileName.toLowerCase().indexOf(".jpeg") > -1);
-          var jpeg = (fileName.indexOf(".gif") > -1) || (fileName.toLowerCase().indexOf(".gif") > -1);
-          var jpeg = (fileName.indexOf(".bmp") > -1) || (fileName.toLowerCase().indexOf(".bmp") > -1);
+          var gif = (fileName.indexOf(".gif") > -1) || (fileName.toLowerCase().indexOf(".gif") > -1);
+          var bmp = (fileName.indexOf(".bmp") > -1) || (fileName.toLowerCase().indexOf(".bmp") > -1);
+          var txt = (fileName.indexOf(".txt") > -1) ;
           //判断文件是否是图片类型
           if(jpg || png || jpeg || gif || bmp){
               imgTag.attr("src",url);
           }else{
               alert("请选择合适的图片类型文件！");
           }
-
+          console.log(event.target.files)
           //最佳显示
           var imgbox = $("<div class='prev-item'><span class='closebtn'>×</span></div>");
           imgbox.append(imgTag);
@@ -138,5 +148,20 @@
       $(this).remove();
       $("#fileBox label:eq(" + (index + 1) + ")").remove();
   });
+</script>
+<!-- 格式是data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAABkCAYAAADDhn8LAAA== -->
+<script>
+//  window.onload = function () {
+//         let $img = document.getElementById('img')
+//         file.onchange = function (e) {
+//             console.log(e.target.files[0])
+//             let file = e.target.files[0]
+//             const fr = new FileReader(file)
+//             fr.readAsDataURL(file)
+//             fr.onload = function () {
+//                  $img.src = this.result
+//             }
+//         }
+//     }
 </script>
 </html>
